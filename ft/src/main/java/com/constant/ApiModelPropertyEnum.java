@@ -1,6 +1,4 @@
-package com.dto;
-
-import com.entity.BaseEnum;
+package com.constant;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

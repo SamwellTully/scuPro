@@ -68,26 +68,9 @@ public interface IFileService {
     /**
      * 获取文件类型
      *
-     * @param fileExt
+     * @param
      * @return
      */
-    default String getContentType(String fileExt) {
-        // 文件的后缀名
-        if ("txt".equalsIgnoreCase(fileExt)) {
-            return "text/plain";
-        }
-        if ("vsd".equalsIgnoreCase(fileExt)) {
-            return "application/vnd.visio";
-        }
-
-        if ("doc".equalsIgnoreCase(fileExt) || "docx".equalsIgnoreCase(fileExt)) {
-            return "application/msword";
-        }
-        if ("xml".equalsIgnoreCase(fileExt)) {
-            return "text/xml";
-        }
-        return "";
-    }
 
     default ResponseEntity<byte[]> downloadMethod(File file, HttpServletRequest request) {
         HttpHeaders heads = new HttpHeaders();

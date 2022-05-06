@@ -1,6 +1,8 @@
 package com.dto;
 
-import com.constant.FileServiceTypeEnum;
+import com.constant.*;
+import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author fanteng
@@ -8,14 +10,13 @@ import com.constant.FileServiceTypeEnum;
  * @description
  */
 public class FileAddDTO {
-
-    @ApiModelProperty("相关业务id(无业务可写死一个id)")
-    @NotBlank(message = "相关业务id不能为空")
-    private String moduleId;
-
-    @ApiModelProperty("相关业务类型(无模块写1)")
-    @NotBlank(message = "相关业务类型不能为空")
-    private String moduleType;
+//    @ApiModelProperty("相关业务id(无业务可写死一个id)")
+//    @NotBlank(message = "相关业务id不能为空")
+//    private String moduleId;
+//
+//    @ApiModelProperty("相关业务类型(无模块写1)")
+//    @NotBlank(message = "相关业务类型不能为空")
+//    private String moduleType;
 
     @ApiModelPropertyEnum(enumDesc = "文件类型",value = FileServiceTypeEnum.class)
     @CheckEnum(enumClazz = FileServiceTypeEnum.class,message = "文件类型错误")

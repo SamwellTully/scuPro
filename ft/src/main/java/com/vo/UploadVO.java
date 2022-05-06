@@ -1,12 +1,14 @@
 package com.vo;
 
-import com.dto.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * @author fanteng
  * @date 2022/5/4 22:00
  * @description
  */
+@Data
 public class UploadVO {
     @ApiModelProperty(value = "文件名称")
     private String fileName;

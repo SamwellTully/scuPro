@@ -1,4 +1,4 @@
-package com.entity;
+package com.constant;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONAware;

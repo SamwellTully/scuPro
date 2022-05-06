@@ -1,6 +1,9 @@
 package com.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * @author fanteng
@@ -42,4 +45,8 @@ public class FileEntity {
      * 创建人，即上传人或者单位
      */
     private Long createrUser;
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 }

@@ -1,9 +1,6 @@
 package com.constant;
 
 
-import com.entity.BaseEnum;
-
-
 /**
  * @author fanteng
  * @date 2022/5/4 21:44

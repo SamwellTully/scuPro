@@ -1,6 +1,4 @@
-package com.dto;
-
-import com.entity.BaseEnum;
+package com.constant;
 
 /**
  * @author fanteng
@@ -32,5 +30,4 @@ public @interface CheckEnum {
     //下面这两个属性必须添加 :不然会报错
     Class<?>[] groups() default {};
 
-//    Class<? extends Payload>[] payload() default {};
 }

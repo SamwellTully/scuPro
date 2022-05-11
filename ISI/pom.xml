@@ -17,6 +17,8 @@
         <jwt.version>0.9.1</jwt.version>
     </properties>
 
+
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

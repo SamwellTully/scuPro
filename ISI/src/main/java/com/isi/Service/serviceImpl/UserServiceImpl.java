@@ -52,23 +52,56 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!ObjectUtils.isEmpty(dbUser)) {
             return  null;
         }
-//        UmsUser addUser = UmsUser.builder()
-//                .username(dto.getName())
-//                .alias(dto.getName())
-//                .password(MD5Utils.getPwd(dto.getPass()))
-//                .email(dto.getEmail())
-//                .createTime(new Date())
-//                .status(true)
-//                .build();
+
         baseMapper.insert(user);
 
         return user;
     }
 
+//    @Override
+//    public boolean updateUser(String institutionName, String institutionType,
+//                              String institutionInstruction, String institutionPostalCode,
+//                              String institutionAddress, String userEmail,
+//                              String userOperatorName, String userPhoneNum,
+//                              String userName, String userPassword)
+//    {
+//        User addUser =  User.builder()
+//                //用户名不可以更改
+//               // .userName(userName)
+//                .userPassword(userPassword)
+//                .userEmail((userEmail))
+//                //默认设置权限为0
+//                .userPrivileges(0)
+//                .userPhoneNum(userPhoneNum)
+//                .userOperatorName(userOperatorName)
+//                .institutionName(institutionName)
+//                .institutionAddress(institutionAddress)
+//                .institutionPostalCode(institutionPostalCode)
+//                .institutionInstruction(institutionInstruction)
+//                .institutionType(institutionType)
+//                .build();
+//        int updateInt = baseMapper.update(addUser,
+//                new LambdaQueryWrapper<User>().eq(User::getUserName, addUser.getUserName()));
+//        if(updateInt!=1){
+//            log.error("{}发生了错误修改");
+//            return false;
+//
+//        }
+//        return true;
+//    }
+
     @Override
     public User getUserByUsername(String username) {
 
-        return baseMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUserName, username));
+        try{
+            User user = baseMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUserName, username));
+            return user;
+        }
+        catch (Exception s){
+            log.error(s.toString());
+            return null;
+        }
+
     }
 }
 

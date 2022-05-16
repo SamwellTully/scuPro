@@ -89,4 +89,11 @@ class IsiApplicationTests {
         //System.out.println(delete);
         //Boolean aBoolean = adminService.addAdmin(admin);
     }
+    @Test
+    void updateTest(){
+        User user = new User();
+        user.setUserName("username0");
+        user.setUserPassword("123456");
+        userService.update(user, new LambdaQueryWrapper<User>().eq(User::getUserName, user.getUserName()));
+    }
 }

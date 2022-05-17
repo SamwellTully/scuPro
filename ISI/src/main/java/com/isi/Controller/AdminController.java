@@ -1,7 +1,6 @@
 package com.isi.Controller;
 
 import com.isi.Service.AdminService;
-import com.isi.Service.UserService;
 import com.isi.dto.APIResult;
 import com.isi.pojo.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,7 @@ import java.util.Map;
 public class AdminController {
     @Autowired
     private AdminService adminService;
-    @Autowired
-    private UserService userService;
+
     @RequestMapping("login")
     public APIResult login(String admin_name, String password){
 
@@ -49,10 +47,4 @@ public class AdminController {
             return APIResult.fail("添加失败","账户已经存在");
 
     }
-
-//    public APIResult userPage(){
-//
-//        return APIResult.fail("查询失败",null);
-//    }
-
 }

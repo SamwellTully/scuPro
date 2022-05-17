@@ -22,10 +22,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@CrossOrigin
 public class UserController {
     @Autowired
     private  UserService userService;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public APIResult login(String username , String password) {
         String token = userService.executeLogin(username,password);

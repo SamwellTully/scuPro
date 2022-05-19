@@ -1,5 +1,7 @@
 package com.isi.dto;
 
+import org.apache.poi.ss.formula.functions.T;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class Result implements Serializable {
         this.data = data;
     }
 
-    public Result(List<ProjectItem> list) {
+    public Result(List<T> list) {
         this.list = list;
     }
 

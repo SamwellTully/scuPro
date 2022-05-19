@@ -1,4 +1,4 @@
-package com.isi.Config;
+package com.isi.config;
 
 
 import com.baomidou.mybatisplus.annotation.DbType;

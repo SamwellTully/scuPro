@@ -1,9 +1,11 @@
 package com.isi.Controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.isi.Service.AdminService;
 import com.isi.Service.UserService;
 import com.isi.dto.APIResult;
 import com.isi.pojo.Admin;
+import com.isi.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -51,6 +53,17 @@ public class AdminController {
             return APIResult.fail("添加失败","账户已经存在");
 
     }
+@RequestMapping("/getUserPage")
+public APIResult userPage(Integer pageIndex,String institutionName,
+                          String institutionType,Integer pageSize){
+
+        Map<String, Object> pageResult = adminService.selectUserPage(institutionName,
+                                        institutionType, pageIndex, pageSize);
+        if(pageResult==null){
+            return APIResult.fail("查询失败",null);
+        }
+        return APIResult.succ("page",pageResult);
+}
 
 //    public APIResult userPage(){
 //

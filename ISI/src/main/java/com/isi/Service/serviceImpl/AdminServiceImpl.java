@@ -1,6 +1,7 @@
 package com.isi.Service.serviceImpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.isi.Mapper.AdminMapper;
 import com.isi.Service.AdminService;
@@ -9,6 +10,9 @@ import com.isi.pojo.User;
 import com.isi.utils.JWTUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author zhulei
  * @create 2022-05-07 17-45
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
+    public static int PAGE_SIZE=10;
 
     @Override
     public String executeLogin(String admin_name, String password) {
@@ -56,5 +61,33 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         }
         return true;
     }
+
+    @Override
+    public Map<String,Object> selectUserPage( String institutionName,
+                                     String institutionType,Integer pageIndex,Integer PageSize) {
+        Page<User> userPage1;
+        if(PageSize!=null)
+        {
+             userPage1= new Page<>((pageIndex - 1) * 10, PageSize);
+        }
+        else
+        {
+            userPage1=new Page<>((pageIndex - 1) * 10, PAGE_SIZE);
+        }
+        try {
+            Page<User> userPage = baseMapper.selectUserPage(userPage1, institutionName, institutionType);
+            userPage.getCurrent();
+
+            Map<String,Object> pageResult=new HashMap<>();
+            pageResult.put("totalPageNum",userPage.getTotal());
+            pageResult.put("currentPageNum",userPage.getCurrent());
+            return pageResult;
+        }
+        catch (Exception e){
+            return null;
+        }
+
+    }
+
 
 }

@@ -6,8 +6,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.isi.Mapper.AdminMapper;
 import com.isi.Mapper.UserMapper;
 import com.isi.Service.AdminService;
+import com.isi.Service.CreateService;
+import com.isi.Service.GeneralService;
 import com.isi.Service.UserService;
 import com.isi.pojo.Admin;
+import com.isi.pojo.CreateTable;
+import com.isi.pojo.CustomTable;
 import com.isi.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +30,10 @@ class IsiApplicationTests {
     private AdminService adminService;
     @Autowired
     private AdminMapper adminMapper;
-
+    @Autowired
+    private GeneralService generalService;
+    @Autowired
+    private CreateService createService;
     @Test
     void contextLoads() {
         System.out.println(("----- selectAll method test ------"));
@@ -45,6 +52,25 @@ class IsiApplicationTests {
 
     }
     @Test
+    void GeneralServiceTest() throws Exception {
+        System.out.println("=======================");
+        generalService.Gupdate("tablename5","description5");
+    }
+    @Test
+    void CreateTest(){
+        System.out.println("<===========create table================>");
+        List<CustomTable> cre = new ArrayList<>();
+        CustomTable cus = new CustomTable();
+        cus.setAttributename("testattributename1");
+        cus.setFieldType("int");
+        cus.setLengthLimit(10);
+        cus.setChoose(true);
+        cus.setNotNull(true);
+        cre.add(cus);
+        createService.MakeTable("testcreate1","test",cre);
+    }
+
+    @Test
     void addAdminTest(){
 //        List<Admin> admins=new ArrayList<Admin>();
 //
@@ -62,14 +88,5 @@ class IsiApplicationTests {
         int admin = adminMapper.delete(new LambdaQueryWrapper<Admin>().eq(Admin::getAdminId,11));
         //System.out.println(delete);
         //Boolean aBoolean = adminService.addAdmin(admin);
-
-
-    }
-    @Test
-    void updateTest(){
-        User user = new User();
-        user.setUserName("username0");
-        user.setUserPassword("123456");
-        userService.update(user, new LambdaQueryWrapper<User>().eq(User::getUserName, user.getUserName()));
     }
 }

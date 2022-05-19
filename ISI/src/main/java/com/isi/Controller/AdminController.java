@@ -6,6 +6,7 @@ import com.isi.dto.APIResult;
 import com.isi.pojo.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,7 @@ import java.util.Map;
  */
 @RequestMapping("/admin")
 @RestController
+@CrossOrigin
 public class AdminController {
     @Autowired
     private AdminService adminService;

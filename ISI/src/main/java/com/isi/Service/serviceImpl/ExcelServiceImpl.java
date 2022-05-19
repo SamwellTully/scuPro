@@ -62,7 +62,9 @@ public class ExcelServiceImpl extends ServiceImpl<ExcelMapper, ProjectItem> impl
         // 如果没有序号相等，则插入数据表格中的数据，然后重新读取
         for (ProjectItem item : items) {
             // 保存数据
-            int insert = baseMapper.insertProjectItem(item.getOrderNumber(), item.getName(), item.getContent(), item.getType(), item.getUnit(), item.getPrice(), item.getCount());
+            int insert = baseMapper.insertProjectItem(item.getOrderNumber(), item.getName(),
+                                                      item.getContent(), item.getType(),
+                                                      item.getUnit(), item.getPrice(), item.getCount());
             if (insert <= 0) {
                 return Result.error("导入失败");
             }
@@ -102,6 +104,7 @@ public class ExcelServiceImpl extends ServiceImpl<ExcelMapper, ProjectItem> impl
                 cell.setCellType(CellType.STRING);
                 list.add(cell.getStringCellValue());
             }
+
             //如果是第一行，这是字段名
             //如果是第二行，这是第一行数据
             if (j==0){
@@ -111,6 +114,7 @@ public class ExcelServiceImpl extends ServiceImpl<ExcelMapper, ProjectItem> impl
             }
         }
 
+        System.out.println(map);
         return Result.success("success",map);
     }
 

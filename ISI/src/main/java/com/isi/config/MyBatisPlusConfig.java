@@ -1,23 +1,26 @@
-package com.isi.config;
+package com.isi.Config;
+
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * @author zhulei
- * @create 2022-05-16 14-53
- * @description mybatis-plus配置类
+ * \sml
+ * 分页插件
  */
+@Configuration
+@MapperScan("com.isi.Mapper")
 public class MyBatisPlusConfig {
-
+    //配置分页插件
     @Bean
-    // 配置MybatisPlus中的插件
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        //数据库类型是MySql，因此参数填写DbType.MYSQL
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
     }
-
 }

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.isi.Service.UserService;
 import com.isi.dto.APIResult;
 import com.isi.pojo.User;
-import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -22,10 +22,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Slf4j
+@CrossOrigin
 public class UserController {
     @Autowired
     private  UserService userService;
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public APIResult login(String username , String password) {
         String token = userService.executeLogin(username,password);
@@ -36,8 +36,6 @@ public class UserController {
         map.put("token", token);
         return APIResult.succ("登入成功",map);
     }
-
-
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public APIResult register(String institutionName,String institutionType,String institutionInstruction,
                     String institutionPostalCode,String institutionAddress ,String userEmail,String userOperatorName,
@@ -124,7 +122,7 @@ public class UserController {
             User userByUsername = userService.getUserByUsername(userName);
             return APIResult.succ("修改成功",userByUsername);
         }
-            return APIResult.fail("修改发生了失败",null);
+        return APIResult.fail("修改发生了失败",null);
     }
     @RequestMapping("/del")
     public APIResult delUser(Integer id){
@@ -135,11 +133,11 @@ public class UserController {
             }
             return APIResult.fail("删除失败",null);
         }
-         catch (Exception e){
+        catch (Exception e){
 
-             log.error(e.toString());
-             return APIResult.fail("删除失败",null);
-         }
+            log.error(e.toString());
+            return APIResult.fail("删除失败",null);
+        }
     }
 
     @RequestMapping("/userPage")

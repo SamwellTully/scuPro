@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isi.Mapper.CreateMapper">
+    <!--    管理员自定义建表-->
+    <update id="Buildtable" parameterType="com.isi.pojo.CreateTable" >
+        create table if not exists  ${tableName}(
+        <foreach collection="customTables"  item="item" separator=",">
+            <if test="item.choose == true">
+                ${item.attributename} ${item.fieldType}(${item.lengthLimit})
+                <choose>
+                    <when test="item.isNotNull == true">
+                        NULL
+                    </when>
+                    <otherwise>
+                        NOT NULL
+                    </otherwise>
+                </choose>
+            </if>
+        </foreach>
+        )
+    </update>
+    <delete id="DropTable" parameterType="com.isi.pojo.CreateTable">
+        drop table  ${tableName}
+    </delete>
+
+</mapper>

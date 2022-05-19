@@ -17,7 +17,7 @@ logging:
 mybatis:
   type-aliases-package: com.isi.pojo
   # 指定 Mapper.xml 的位置
-  mapper-locations: classpath:mapper/*Mapper.xml
+  mapper-locations: classpath:mapper/*Mapper.xml,classpath:mapper/*.xml
   #扫描实体类的位置,在此处指明扫描实体类的包，在 UserMapper.xml 中就可以不写实体类的全路径名
   configuration:
     map-underscore-to-camel-case: true

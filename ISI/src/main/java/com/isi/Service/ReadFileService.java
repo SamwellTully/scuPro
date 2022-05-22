@@ -12,4 +12,5 @@ import java.util.Map;
  */
 public interface ReadFileService {
     Map<Integer, Map<String, String>> readExcelContent(MultipartFile file) throws IOException;
+    Map<Integer, Map<String, String>> readCSV(MultipartFile file) throws IOException;
 }

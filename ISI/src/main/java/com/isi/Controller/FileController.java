@@ -16,7 +16,7 @@ import java.util.Map;
  * @author fanteng
  * @date 2022/5/19 20:56
  * @description
- * 上传和读文件的接口   postman测试地址：localhost:8000/upload/import
+ * 上传和读文件的接口
  */
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -26,13 +26,25 @@ public class FileController {
 
     @Autowired
     private ReadFileService readFileService;
+//    xlsx和xls文件格式上传的postman测试地址：localhost:8000/upload/import
     @PostMapping("/import")
     public Result importProject(MultipartFile file) throws IOException {
         String postfix = ExcelTool.getPostfix(file.getOriginalFilename());
         if (!"xlsx".equals(postfix) && !"xls".equals(postfix) && !"csv".equals(postfix) ) {
-            return Result.error("导入失败，请选择正确的文件格式上传，本系统只支持xlsx、xls、csv格式");
+            return Result.error("导入失败，请选择正确的文件格式上传，本端口只支持xlsx、xls文件格式");
         }
         Map<Integer, Map<String, String>> integerMapMap = readFileService.readExcelContent(file);
         return Result.success("读取成功",integerMapMap);
+    }
+
+//    csv文件格式上传postman测试地址：localhost:8000/upload/importCSV
+    @PostMapping("/importCSV")
+    public Result importCSV(MultipartFile file) throws IOException {
+        String postfix = ExcelTool.getPostfix(file.getOriginalFilename());
+        if (!"csv".equals(postfix)) {
+            return Result.error("导入失败，请选择正确的文件格式，本端口只支持csv文件格式");
+        }
+        Map<Integer, Map<String, String>> map = readFileService.readCSV(file);
+        return Result.success("读取成功",map);
     }
 }

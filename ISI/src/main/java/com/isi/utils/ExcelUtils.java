@@ -66,7 +66,10 @@ public class ExcelUtils {
         row = sheet.getRow(0);
         // 标题总列数
         int colNum1 = row.getPhysicalNumberOfCells();
+
         Map<Integer, String> map = new HashMap<>();
+
+        //保存表头到map
         for (int i = 0; i < colNum1; i++) {
             map.put(i, row.getCell(i).getStringCellValue());
         }
@@ -77,6 +80,7 @@ public class ExcelUtils {
             int j = 0;
             Map<String, String> cellValue = new HashMap<>();
             while (j < colNum) {
+                //获取每一行对应的j列的数据
                 String obj = getCellFormatValue(row.getCell(j));
                 cellValue.put(map.get(j), obj);
                 j++;

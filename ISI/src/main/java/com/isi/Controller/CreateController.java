@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("/C")
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class CreateController {
     Boolean token;
     @Autowired

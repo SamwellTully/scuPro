@@ -9,8 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminMapper extends BaseMapper<Admin> {
-    Page<User> selectUserPage(@Param("page") Page<User> page, String institutionName,
-                              String institutionType);
+    Page<User> selectUserPage(@Param("page") Page<User> page,
+                              @Param("institutionName") String institutionName,
+                              @Param("institutionType") String institutionType);
 
 
 }

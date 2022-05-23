@@ -11,7 +11,8 @@ import java.util.List;
 
 @RequestMapping("/G")
 @RestController
-@CrossOrigin
+
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class GeneralController {
 
     @Autowired

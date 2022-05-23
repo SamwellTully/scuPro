@@ -22,7 +22,8 @@ import java.util.Map;
  */
 @RequestMapping("/admin")
 @RestController
-@CrossOrigin
+
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class AdminController {
     @Autowired
     private AdminService adminService;

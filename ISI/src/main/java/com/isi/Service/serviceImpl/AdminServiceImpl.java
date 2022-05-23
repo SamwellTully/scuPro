@@ -65,10 +65,19 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public Map<String,Object> selectUserPage( String institutionName,
                                      String institutionType,Integer pageIndex,Integer PageSize) {
+        if(institutionName.equals("")){
+            institutionName=null;
+        }
+        if(institutionType.equals("")){
+            institutionType=null;
+        }
+        if(pageIndex==null){
+            pageIndex=1;
+        }
         Page<User> userPage1;
         if(PageSize!=null)
         {
-             userPage1= new Page<>((pageIndex - 1) * 10, PageSize);
+             userPage1= new Page<>((pageIndex - 1) * PageSize, PageSize);
         }
         else
         {
@@ -76,11 +85,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         }
         try {
             Page<User> userPage = baseMapper.selectUserPage(userPage1, institutionName, institutionType);
-            userPage.getCurrent();
+
 
             Map<String,Object> pageResult=new HashMap<>();
-            pageResult.put("totalPageNum",userPage.getTotal());
-            pageResult.put("currentPageNum",userPage.getCurrent());
+            pageResult.put("page",userPage.getRecords());
+            pageResult.put("totalPageNum",userPage.getPages());
+            pageResult.put("currentPageNum",pageIndex);
             return pageResult;
         }
         catch (Exception e){

@@ -3,13 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.isi.Mapper.AdminMapper">
-    <select id="selectUserPage">
+    <select id="selectUserPage" resultType="com.isi.pojo.User">
         select * from `user` where 1=1
-        <if test="institution_name!=null">
-            and institution_name={institutionName}
+        <if test="institutionType!=null">
+            and institution_type= #{institutionType}
         </if>
-        <if test="institution_type!=null">
-            and institution_type={institutionType}
+        <if test="institutionName!=null">
+            and institution_name= #{institutionName}
         </if>
     </select>
 </mapper>

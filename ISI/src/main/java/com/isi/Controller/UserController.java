@@ -22,7 +22,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
     @Autowired
     private  UserService userService;
@@ -76,7 +76,7 @@ public class UserController {
     @PostMapping("/update")
     public APIResult updateUser(String institutionName,String institutionType,String institutionInstruction,
                                 String institutionPostalCode,String institutionAddress ,String userEmail,String userOperatorName,
-                                String userPhoneNum,String userName,String userPassword) {
+                                String userPhoneNum,String userName) {
 
 
 
@@ -113,9 +113,8 @@ public class UserController {
         if(userPhoneNum!=null&&!(userPhoneNum.equals(""))){
             adduser.setUserPhoneNum(userPhoneNum);
         }
-        if(userPassword!=null&&!(userPassword.equals(""))){
-            adduser.setUserPassword(userPassword);
-        }
+
+
         boolean b = userService.update(adduser, new LambdaQueryWrapper<User>().
                 eq(User::getUserName, adduser.getUserName()));
 

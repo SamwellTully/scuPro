@@ -47,7 +47,7 @@ class IsiApplicationTests {
     }
     @Test
     void baseMapTest(){
-        String username="username0";
+        String username="username1";
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUserName, username));
 
     }
@@ -95,5 +95,16 @@ class IsiApplicationTests {
         user.setUserName("username0");
         user.setUserPassword("123456");
         userService.update(user, new LambdaQueryWrapper<User>().eq(User::getUserName, user.getUserName()));
+    }
+    @Test
+    void addUser(){
+        List<User> users=new ArrayList<User>(20);
+        for (int i = 0; i < users.size(); i++) {
+            User user=new User();
+            user.setUserName("userName"+String.valueOf(i+10));
+            user.setUserEmail("UserEmail"+String.valueOf(i+10));
+            user.setUserPassword("password");
+        }
+
     }
 }

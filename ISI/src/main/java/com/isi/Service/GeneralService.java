@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.isi.pojo.GeneralTable;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,10 @@ public interface GeneralService extends IService<GeneralTable> {
     List<Map<String,Object>> getProper(@Param("tableName") String tableName);
 
     int SelCondition(@Param("GTalename") String GTalename);
+
+//        内容替换
+    List<Map<String, String>> Conreplacement(@Param("file") MultipartFile file,@Param("relationMap") Map<String,String> relationMap,@Param("hashMap") Map<String,Map<String,String>> hashMap) throws IOException;
+
 
 //    Boolean writedate(@Param("tableName") String tableName,@Param("Map") Map map,@Param("List<Map>") List<Map<String,Object>> listMap);
 

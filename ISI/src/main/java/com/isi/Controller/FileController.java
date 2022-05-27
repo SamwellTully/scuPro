@@ -1,5 +1,6 @@
 package com.isi.Controller;
 
+import com.isi.Service.GeneralService;
 import com.isi.Service.ReadFileService;
 import com.isi.dto.Result;
 import com.isi.utils.ExcelTool;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,6 +28,8 @@ public class FileController {
 
     @Autowired
     private ReadFileService readFileService;
+    @Autowired
+    private GeneralService generalService;
 //    xlsx和xls文件格式上传的postman测试地址：localhost:8000/upload/import
     @PostMapping("/import")
     public Result importProject(MultipartFile file) throws IOException {
@@ -34,6 +38,7 @@ public class FileController {
             return Result.error("导入失败，请选择正确的文件格式上传，本端口只支持xlsx、xls文件格式");
         }
         Map<Integer, Map<String, String>> integerMapMap = readFileService.readExcelContent(file);
+
         return Result.success("读取成功",integerMapMap);
     }
 

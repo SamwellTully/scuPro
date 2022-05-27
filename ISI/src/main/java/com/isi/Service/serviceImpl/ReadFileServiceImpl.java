@@ -51,6 +51,7 @@ public class ReadFileServiceImpl implements ReadFileService {
                     contentList = Arrays.asList(next);
                     for (int j = 0;j < headerList.size();j++) {
                         map.put(headerList.get(j),contentList.get(j));
+
                     }
                     content.put(i,map);
                 }
@@ -59,9 +60,9 @@ public class ReadFileServiceImpl implements ReadFileService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for (String s : headerList) {
-            System.out.println("测试表头字段："+s);
-        }
+//        for (String s : headerList) {
+//            System.out.println("测试表头字段："+s);
+//        }
         return content;
     }
 }

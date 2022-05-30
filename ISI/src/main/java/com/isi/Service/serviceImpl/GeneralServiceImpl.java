@@ -10,6 +10,7 @@ import com.isi.Service.ReadFileService;
 import com.isi.dto.Result;
 import com.isi.pojo.GeneralTable;
 import com.isi.utils.ExcelTool;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -95,16 +96,8 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
         Map<Integer, Map<String, String>> content = new HashMap<>();
         String postfix = ExcelTool.getPostfix(file.getOriginalFilename());
 
-        if (("xlsx".equals(postfix) || "xls".equals(postfix))) {
-
-            content = readFileService.readExcelContent(file);
-
-        }
-        else if ("csv".equals(postfix)) {
-
-            content = readFileService.readCSV(file);
-
-        }
+        if (("xlsx".equals(postfix) || "xls".equals(postfix))) {content = readFileService.readExcelContent(file);}
+        else if ("csv".equals(postfix)) {content = readFileService.readCSV(file);}
 
         Collection<Map<String, String>> map = content.values();
         List<Map<String,String>> starlistmap = new ArrayList<>(map);//解析完的excel文件传输的数据
@@ -118,12 +111,13 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
         String hashmap_value_code = String.valueOf(new StringBuffer());          //正则时使用 值   前端反馈表
         String hashmap_unit_code = String.valueOf(new StringBuffer());          //正则时使用  单位
 
+
+
 //清洗数据
         List<Map<String,String>> listmap = new ArrayList<>();
         for(int i = 0;i < starlistmap.size();i++){
             Map<String,String> middleMap = new HashMap<>();
             for(String relationkey :relationMap.keySet()){
-
                 for(String listkey : starlistmap.get(i).keySet()){
                     if (relationkey.equals(listkey)){
                         middleMap.put(relationkey,starlistmap.get(i).get(relationkey));
@@ -136,20 +130,21 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
 //能把单位换算和内容覆盖写在一起
         String regEx="^([0-9]*[.]?[0-9]+)(.*)";
         Pattern pattern = Pattern.compile(regEx);
+
         for (String hashkey : hashMap.keySet()) { //对hashMap 的key进行遍历  hashmap就是前端传的数据
             for(String listkey : listmap.get(0).keySet()){ //对listmap的key进行遍历，取第0个map
                 if(hashkey.equals(listkey)){ // 判断 hashMap的某个key是否等于 listmap第0个map的key
                     for(int i = 0;i<listmap.size();i++){ // 对整个遍历listmap从i=0，开始
+                        Matcher mat =null;
                         for (String hashmapkey : hashMap.get(hashkey).keySet()) {//hashmapkey是hashmap中的那个map ，key 指的是对hashmap中的map中的key遍历
-
+                            mat = pattern.matcher(hashmapkey);
                             if (hashmapkey.equals(listmap.get(i).get(listkey))) {//如果hashmapkey中的value与某个listmap中map确定的key的指向的value的内容相同
                                 listmap.get(i).put(listkey, hashMap.get(hashkey).get(hashmapkey));//内容替换,字符串的内容替换，全覆盖
-
                             }
-                            else
+                             if(mat.find())
                             {
-//                                切开hashmap中的key
-                                Matcher matcher_hashmapkey = pattern.matcher(hashmapkey);
+                                if(listmap.get(i).get(listkey) == null)continue;//如果listmap列表中为空时，不做内容替换
+                                Matcher matcher_hashmapkey = pattern.matcher(hashmapkey);// 切开hashmap中的key
                                 while (matcher_hashmapkey.find()) { //切开的是value
                                     String hashmapkey_value_group = matcher_hashmapkey.group(1);
                                     String hashmapkey_unit_group = matcher_hashmapkey.group(2);
@@ -157,7 +152,6 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
                                     hashmapkey_unit_code = hashmapkey_unit_group; // unit_code 里面存储 单位
 
                                 }
-
                                 //切开hashmap中的value，将单位和数值分开
                                 Matcher matcher_hashmap = pattern.matcher(hashMap.get(hashkey).get(hashmapkey));//切开hashmap中的value，将单位和数值分开
                                 while (matcher_hashmap.find()) { //切开的是value
@@ -166,16 +160,8 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
                                     hashmap_value_code = hashmap_value_group; // value_code 里面存储数值
                                     hashmap_unit_code = hashmap_unit_group; // unit_code 里面存储 单位
                                 }
-
-                                Matcher matcher_listmap = null;
                                 //切开listmap中的value，将单位和数值分开
-                                try{
-                                    matcher_listmap = pattern.matcher(listmap.get(i).get(listkey));//切开listmap中的value，将单位和数值分开
-
-                                } catch (NullPointerException e) {
-                                    throw new NullPointerException("Conreplacement异常：上传的表中有空行");
-                                }
-
+                                Matcher matcher_listmap = pattern.matcher(listmap.get(i).get(listkey));//切开listmap中的value，将单位和数值分开
                                     while (matcher_listmap.find()) {
                                         String listmap_value_group = matcher_listmap.group(1);
                                         String listmap_unit_group = matcher_listmap.group(2);

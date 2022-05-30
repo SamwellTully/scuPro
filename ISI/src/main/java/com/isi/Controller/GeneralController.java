@@ -23,16 +23,15 @@ public class GeneralController {
     private GeneralService generalService;
 
     //    分页 ’‘’路径传参
-    @GetMapping("{currentPage}/{pageSize}")
-    public IPage<GeneralTable> getPages(@PathVariable Integer currentPage, @PathVariable Integer pageSize) {
+    @PostMapping("/Pages")
+    public IPage<GeneralTable> getPages( Integer currentPage,  Integer pageSize) {
         return generalService.getPage(currentPage, pageSize);
     }
 
 
 //       路径传参
-    @GetMapping("{tableName}")
-    public APIResult getProper(@PathVariable String tableName) {
-
+    @PostMapping("/Propers")
+    public APIResult getProper( String tableName) {
        generalService.getProper(tableName);
         return APIResult.succ("创建成功", true);
     }
@@ -46,7 +45,7 @@ public class GeneralController {
         mateMap.put("男","man");
         mateMap.put("女","woman");
         hashmap.put("性别",mateMap);
-        mateMap1.put("1ul","100ml");
+        mateMap1.put("1ul","100cel");
         hashmap.put("每份样本数量",mateMap1);
         Map<String,String> relationmap = new HashMap<>(); //关系映射
 
@@ -57,8 +56,10 @@ public class GeneralController {
 //        这只是测试用的
 //        如果真的使用 要把                     👇 变为上面的relationMap   hashmap转为 hashMap
 //        postman无法测试，因为postman传输的 不是map 需要前端将获取的数据（映射等）进行转化为 Map<String,String> 和 Map<String,Map<String,String>>
-        generalService.Conreplacement(file,relationmap,hashmap);
-        return APIResult.succ("替换成功", true);
+//        带单位
+       generalService.Conreplacement(file,relationmap,hashmap);
+
+        return APIResult.succ("替换成功", generalService.Conreplacement(file,relationmap,hashmap));
     }
 
 

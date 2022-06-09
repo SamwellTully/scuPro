@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.isi.Mapper.AdminMapper;
+import com.isi.Mapper.MappingMapper;
 import com.isi.Mapper.UserMapper;
 import com.isi.Service.*;
 import com.isi.pojo.Admin;
@@ -35,6 +36,10 @@ class IsiApplicationTests {
     private CreateService createService;
     @Autowired
     private SaveDataService saveDataService;
+    @Autowired
+    private MappingService mappingService;
+    @Autowired
+    private MappingMapper mappingMapper;
     @Test
     void contextLoads() {
         System.out.println(("----- selectAll method test ------"));
@@ -132,5 +137,14 @@ class IsiApplicationTests {
         relationmap.put("每份样本数量", "fen");
         relationmap.put("出生地", "chusheng");
         saveDataService.saveData(data, relationmap, tableName);
+    }
+    @Test
+    void Datetest(){
+        Map<String,String> map = new HashMap<>();
+        map.put("k","value");
+        map.put("k1","value1");
+        map.put("k2","value2");
+        mappingService.IncreaseMapping(22,"test",map);
+        System.out.println(mappingService.CheckMapping(22,"test"));
     }
 }

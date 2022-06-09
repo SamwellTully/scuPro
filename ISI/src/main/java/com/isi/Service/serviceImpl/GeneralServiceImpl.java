@@ -91,16 +91,16 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
 
 //    内容替换
     @Override
-    public List<Map<String, String>> Conreplacement(MultipartFile file,Map<String,String> relationMap,Map<String,Map<String,String>> hashMap) throws IOException {
+    public List<Map<String, String>> Conreplacement(MultipartFile file,Map<String,String> relationMap,Map<String,Map<String,String>> hashMap) throws Exception {
 
-        Map<Integer, Map<String, String>> content = new HashMap<>();
+        List<Map<String, String>> content = new ArrayList<>();
         String postfix = ExcelTool.getPostfix(file.getOriginalFilename());
 
         if (("xlsx".equals(postfix) || "xls".equals(postfix))) {content = readFileService.readExcelContent(file);}
         else if ("csv".equals(postfix)) {content = readFileService.readCSV(file);}
 
-        Collection<Map<String, String>> map = content.values();
-        List<Map<String,String>> starlistmap = new ArrayList<>(map);//解析完的excel文件传输的数据
+//        Collection<Map<String, String>> map = content.values();
+        List<Map<String,String>> starlistmap = new ArrayList<>(content);//解析完的excel文件传输的数据
 
         String listmap_value_code = String.valueOf(new StringBuffer());          //正则时使用 值     例：1cm   value = 1 ；处理总数据表
         String listmap_unit_code = String.valueOf(new StringBuffer());          //正则时使用  单位   例： 1cm   unit = cm;

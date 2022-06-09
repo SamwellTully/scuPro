@@ -1,5 +1,6 @@
 package com.isi.utils;
 
+import com.isi.dto.BaseException;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -11,7 +12,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,18 +51,19 @@ public class ExcelUtils {
         return map;
 
 
+
     }
 
     /**
-     * 读取excel内容不包括表头
+     * 读取excel内容:表头+数据内容
      *
      * @param inputStream 文件
      * @return Map<行下标, Map < 列下标, Str>>
      */
-    public static Map<Integer, Map<String, String>> readExcelContent(InputStream inputStream, String suffix) {
+    public static List<Map<String, String>> readExcelContent(InputStream inputStream, String suffix) {
 
         getWorkbook(inputStream, suffix);
-        Map<Integer, Map<String, String>> content = new HashMap<>();
+        List<Map<String, String>> content = new ArrayList<>();
         sheet = wb.getSheetAt(0);
         // 得到总行数
         int rowNum = sheet.getLastRowNum();
@@ -77,16 +81,19 @@ public class ExcelUtils {
         // 正文内容应该从第二行开始,第一行为表头的标题
         for (int i = 1; i <= rowNum; i++) {
             row = sheet.getRow(i);
-            int j = 0;
-            Map<String, String> cellValue = new HashMap<>();
-            while (j < colNum) {
-                //获取每一行对应的j列的数据
-                String obj = getCellFormatValue(row.getCell(j));
-                cellValue.put(map.get(j), obj);
-                j++;
+            if (row != null) {
+                int j = 0;
+                Map<String, String> cellValue = new HashMap<>();
+                while (j < colNum) {
+                    //获取每一行对应的j列的数据
+                    String obj = getCellFormatValue(row.getCell(j));
+                    cellValue.put(map.get(j), obj);
+                    j++;
+                }
+                content.add(cellValue);
             }
-            content.put(i, cellValue);
         }
+//        System.out.println(content);
         return content;
     }
 
@@ -120,7 +127,7 @@ public class ExcelUtils {
                     }
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected value: " + cellTypeEnum);
+                    throw new BaseException("上传的表格格式有问题，请检查后重试");
             }
         }
         return cellValue;
@@ -148,33 +155,4 @@ public class ExcelUtils {
         }
     }
 
-
-    /**
-     * 判断文件大小
-     *
-     * @param file  文件
-     * @param size  限制大小
-     * @param unit  限制单位（B,K,M,G）
-     * @return
-     */
-    public static boolean checkFileSize(MultipartFile file, int size, String unit) {
-        if (file.isEmpty() || StringUtils.isEmpty(size) || StringUtils.isEmpty(unit)) {
-            return false;
-        }
-        long len = file.getSize();
-        double fileSize = 0;
-        if ("B".equals(unit.toUpperCase())) {
-            fileSize = (double) len;
-        } else if ("K".equals(unit.toUpperCase())) {
-            fileSize = (double) len / 1024;
-        } else if ("M".equals(unit.toUpperCase())) {
-            fileSize = (double) len / 1048576;
-        } else if ("G".equals(unit.toUpperCase())) {
-            fileSize = (double) len / 1073741824;
-        }
-        if (fileSize > size) {
-            return false;
-        }
-        return true;
-    }
 }

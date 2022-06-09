@@ -23,7 +23,7 @@ public interface GeneralService extends IService<GeneralTable> {
     int SelCondition(@Param("GTalename") String GTalename);
 
 //        内容替换
-    List<Map<String, String>> Conreplacement(@Param("file") MultipartFile file,@Param("relationMap") Map<String,String> relationMap,@Param("hashMap") Map<String,Map<String,String>> hashMap) throws IOException;
+    List<Map<String, String>> Conreplacement(@Param("file") MultipartFile file,@Param("relationMap") Map<String,String> relationMap,@Param("hashMap") Map<String,Map<String,String>> hashMap) throws Exception;
 
 
 //    Boolean writedate(@Param("tableName") String tableName,@Param("Map") Map map,@Param("List<Map>") List<Map<String,Object>> listMap);

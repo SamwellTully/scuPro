@@ -37,7 +37,7 @@ public class GeneralController {
     }
 //     内容替换
     @PostMapping("/relacement")
-    public APIResult Contentreplacement(MultipartFile file,  Map<String,String> relationMap,  Map<String,Map<String,String>> hashMap) throws IOException {
+    public APIResult Contentreplacement(MultipartFile file,  Map<String,String> relationMap,  Map<String,Map<String,String>> hashMap) throws Exception {
         Map<String,Map<String,String>> hashmap = new HashMap<>();//内容替换: String 指的是哪行 （前端传表）
                                                                     //Map<String,String>指的是替换规则 （男 = man）
         Map<String,String> mateMap = new HashMap<>(); //测试
@@ -45,7 +45,7 @@ public class GeneralController {
         mateMap.put("男","man");
         mateMap.put("女","woman");
         hashmap.put("性别",mateMap);
-        mateMap1.put("1ul","100cel");
+        mateMap1.put("1ul","111ml");
         hashmap.put("每份样本数量",mateMap1);
         Map<String,String> relationmap = new HashMap<>(); //关系映射
 

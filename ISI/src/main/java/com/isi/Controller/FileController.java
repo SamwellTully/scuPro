@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,19 +38,25 @@ public class FileController {
         if (!"xlsx".equals(postfix) && !"xls".equals(postfix) && !"csv".equals(postfix) ) {
             return Result.error("导入失败，请选择正确的文件格式上传，本端口只支持xlsx、xls文件格式");
         }
-        Map<Integer, Map<String, String>> integerMapMap = readFileService.readExcelContent(file);
+//        if (readFileService.checkFileSize(file,5,"M")){
+//            return Result.error("文件过大");
+//        }
+        List<Map<String, String>> integerMapMap = readFileService.readExcelContent(file);
 
         return Result.success("读取成功",integerMapMap);
     }
 
 //    csv文件格式上传postman测试地址：localhost:8000/upload/importCSV
     @PostMapping("/importCSV")
-    public Result importCSV(MultipartFile file) throws IOException {
+    public Result importCSV(MultipartFile file) throws Exception {
         String postfix = ExcelTool.getPostfix(file.getOriginalFilename());
         if (!"csv".equals(postfix)) {
             return Result.error("导入失败，请选择正确的文件格式，本端口只支持csv文件格式");
         }
-        Map<Integer, Map<String, String>> map = readFileService.readCSV(file);
+//        if (readFileService.checkFileSize(file,500,"M")){
+//            return Result.error("文件过大");
+//        }
+        List<Map<String, String>> map = readFileService.readCSV(file);
         return Result.success("读取成功",map);
     }
 }

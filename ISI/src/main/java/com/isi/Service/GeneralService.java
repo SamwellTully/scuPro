@@ -24,8 +24,8 @@ public interface GeneralService extends IService<GeneralTable> {
 
 //        内容替换
     List<Map<String, String>> Conreplacement(@Param("file") MultipartFile file,@Param("relationMap") Map<String,String> relationMap,@Param("hashMap") Map<String,Map<String,String>> hashMap) throws Exception;
-
-
+    List<Map<String,Object>> Gettarget(@Param("tableName") String tableName);
+    List<Map<String,Object>> GetDatebase();
 //    Boolean writedate(@Param("tableName") String tableName,@Param("Map") Map map,@Param("List<Map>") List<Map<String,Object>> listMap);
 
 

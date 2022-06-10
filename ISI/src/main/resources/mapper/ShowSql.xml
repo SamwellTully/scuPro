@@ -7,7 +7,12 @@
 <select id="Showstructure" parameterType="com.isi.pojo.CreateTable" resultType="java.util.Map">
     describe ${tableName}
 </select>
-
+    <select id="Selecttarget" parameterType="com.isi.pojo.CreateTable" resultType="java.util.Map">
+        select * from ${tableName}  LIMIT 1
+    </select>
+    <select id="SelectDatebase"  resultType="java.util.Map">
+        select  Generaltable_name from Generaltable
+    </select>
 <!--    <update id="Writing">-->
 <!--     INSERT INTO-->
 <!--    </update>-->

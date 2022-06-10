@@ -190,5 +190,16 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
             }
         return listmap;
     }
+    @Override
+    public List<Map<String, Object>> Gettarget(String tableName) {
+        List<Map<String,Object>> data = generalMapper.Selecttarget(tableName);
+        return data;
+    }
 
+    @Override
+    public List<Map<String,Object>> GetDatebase() {
+        List<Map<String,Object>> database = generalMapper.SelectDatebase();
+
+        return database;
+    }
 }

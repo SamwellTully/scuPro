@@ -61,26 +61,14 @@ public class GeneralController {
 
         return APIResult.succ("替换成功", generalService.Conreplacement(file,relationmap,hashmap));
     }
-
-
-
-/**
- * 字段映射
-  */
-
-
-
-
-
-
-
-
-
-/**
- * 1.接受前端已建立好的映射 map<String,Object> map中<key 和 value>
- * 2.遍历选中的表，将所有的filed存储到一个list<>中。
- * 3.将所有的内容都存储到list<Map>中
- * 4.1.可以把所有List<Map>中的每一个map的key与value交换
- * 5.用xml去写sql的最底层语言，用foreach去做字符拼接
- */
+    @PostMapping("/getdata")
+    public List<Map<String,Object>> Gettarget(String tableName){
+        List<Map<String,Object>> data = generalService.Gettarget(tableName);
+        return data;
+    }
+    @GetMapping("/getdatabase")
+    public List<Map<String,Object>> Getdatabase(){
+        List<Map<String,Object>> database = generalService.GetDatebase();
+        return database;
+    }
 }

@@ -1,5 +1,6 @@
 package com.isi.Controller;
 
+import com.alibaba.fastjson.JSON;
 import com.isi.Service.MappingService;
 import com.isi.dto.APIResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RequestMapping("/mappings")
@@ -18,9 +20,11 @@ public class MappingController {
     @Autowired
     private MappingService mappingService;
     @PostMapping("/increase")
-    public APIResult Increase(int UserId, String Tablename, Map<String, String> Relationship){
+    public APIResult Increase(int UserId, String Tablename, String RelationString){
+        Map<String, String> RelationMap = new HashMap<>();
+        RelationMap = (Map<String, String>) JSON.parse(RelationString);
         Boolean token = false;
-        token = mappingService.IncreaseMapping(UserId,Tablename,Relationship);
+        token = mappingService.IncreaseMapping(UserId,Tablename,RelationMap);
         if (token)return APIResult.succ("插入数据成功",mappingService.CheckMapping(UserId,Tablename));
         else return APIResult.fail("插入数据失败","false");
     }

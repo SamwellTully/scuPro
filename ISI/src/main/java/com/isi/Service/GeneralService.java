@@ -23,10 +23,17 @@ public interface GeneralService extends IService<GeneralTable> {
     int SelCondition(@Param("GTalename") String GTalename);
 
 //        内容替换
-    List<Map<String, String>> Conreplacement(@Param("file") MultipartFile file,@Param("relationMap") Map<String,String> relationMap,@Param("hashMap") Map<String,Map<String,String>> hashMap) throws Exception;
+    List<Map<String, String>> Conreplacement(@Param("listmap") List<Map<String,String>> listmap,@Param("relationMap") Map<String,String> relationMap,@Param("hashMap") Map<String,Map<String,String>> hashMap) throws Exception;
     List<Map<String,Object>> Gettarget(@Param("tableName") String tableName);
     List<Map<String,Object>> GetDatebase();
 //    Boolean writedate(@Param("tableName") String tableName,@Param("Map") Map map,@Param("List<Map>") List<Map<String,Object>> listMap);
+//  清洗数据
+    List<Map<String,String>> Cleandata(@Param("file") MultipartFile file,Map<String,String> relationMap) throws Exception;
 
+    List<Map<String,Object>> IsNotEnume(@Param("tableName") String tableName,@Param("columnName") String columnName);
+
+//   没有匹配规则的错误报警
+   List<Map<String,String>> NotRelationData(@Param("listmap") List<Map<String,String>> listmap,@Param("relationMap") Map<String,String> relationMap,@Param("hashMap") Map<String,Map<String,String>> hashMap);
+    List<Map<String,String>> NotRelationMsg(@Param("listmap") List<Map<String,String>> listmap,@Param("relationMap") Map<String,String> relationMap,@Param("hashMap") Map<String,Map<String,String>> hashMap);
 
 }

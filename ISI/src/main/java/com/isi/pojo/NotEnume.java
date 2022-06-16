@@ -5,17 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class IsNotEnume {
-    public String tableName;
-    private String columnName;
-    private String tokenEnume;
-    private List<Enume> itemEnume;
+public class NotEnume {
     private int lengthMin;
     private int lengthMax;
 }

@@ -1,15 +1,23 @@
 package com.isi.Controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.isi.Service.CreateService;
 import com.isi.Service.GeneralService;
 import com.isi.dto.APIResult;
 import com.isi.pojo.CreateTable;
+import com.isi.pojo.Enume;
+import com.isi.pojo.IsNotEnume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 创表和将新表名和描述添加到总表中
@@ -30,8 +38,6 @@ public class CreateController {
         createTable = createService.Create_Json(JsonString);
         token = generalService.Gupdate(createTable.getTableName(),
                                        createTable.getTableDescription());
-
-        System.out.println("========create de token="+token);
         if (token) {
             createService.MakeTable(createTable.getTableName(),
                     createTable.getTableDescription(),
@@ -56,5 +62,33 @@ public class CreateController {
             return APIResult.fail("删除失败",-1);
         }
     }
+  @RequestMapping("/limits")
+  public APIResult Limits(String JsonString){
+        List<Map<String,Object>> tempMap = new ArrayList<>();
+       tempMap = JSON.parseObject(JsonString,List.class);
+       for(int i = 0;i<tempMap.size();i++){
+           if(tempMap.get(i).get("tokenEnume").equals("true")){
+               List<Enume> enumes = new ArrayList<>();
+               List<Map> data = (List)tempMap.get(i).get("itemEnume");
+               for(Map map :data){
+                   Enume enume = new Enume();
+                   enume.setEnumes((String) map.get("enumes"));
+                   enumes.add(enume);
+               }
+               createService.ELmit((String) tempMap.get(i).get("tableName"),
+                                   (String) tempMap.get(i).get("columnName"),
+                                     enumes,
+                                   (String) tempMap.get(i).get("tokenEnume"));
+           }
+           else {
+               createService.LLmit((String) tempMap.get(i).get("tableName"),
+                                   (String) tempMap.get(i).get("columnName"),
+                                   (int) tempMap.get(i).get("lengthMin"),
+                                   (int) tempMap.get(i).get("lengthMax"),
+                                  (String) tempMap.get(i).get("tokenEnume"));
+           }
+       }
+       return APIResult.succ("添加成功",true);
+  }
 
 }

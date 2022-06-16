@@ -55,9 +55,6 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
     public Boolean delectdate(String GTalename) {
         GeneralTable general = new GeneralTable();
         general.setGTalename(GTalename);
-//        int count = generalMapper.selectCount(new QueryWrapper<GeneralTable>()
-//                .eq("GeneralTable_name", general.getGTalename())
-//        );
         if (generalService.SelCondition(GTalename) > 0) {
             HashMap<String,Object> map = new HashMap<>();
             map.put("GeneralTable_name",general.getGTalename());
@@ -88,19 +85,9 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
         );
         return count;
     }
-
 //    内容替换
     @Override
-    public List<Map<String, String>> Conreplacement(MultipartFile file,Map<String,String> relationMap,Map<String,Map<String,String>> hashMap) throws Exception {
-
-        List<Map<String, String>> content = new ArrayList<>();
-        String postfix = ExcelTool.getPostfix(file.getOriginalFilename());
-
-        if (("xlsx".equals(postfix) || "xls".equals(postfix))) {content = readFileService.readExcelContent(file);}
-        else if ("csv".equals(postfix)) {content = readFileService.readCSV(file);}
-
-//        Collection<Map<String, String>> map = content.values();
-        List<Map<String,String>> starlistmap = new ArrayList<>(content);//解析完的excel文件传输的数据
+    public List<Map<String, String>> Conreplacement(List<Map<String,String>> listmap,Map<String,String> relationMap,Map<String,Map<String,String>> hashMap) throws Exception {
 
         String listmap_value_code = String.valueOf(new StringBuffer());          //正则时使用 值     例：1cm   value = 1 ；处理总数据表
         String listmap_unit_code = String.valueOf(new StringBuffer());          //正则时使用  单位   例： 1cm   unit = cm;
@@ -111,26 +98,9 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
         String hashmap_value_code = String.valueOf(new StringBuffer());          //正则时使用 值   前端反馈表
         String hashmap_unit_code = String.valueOf(new StringBuffer());          //正则时使用  单位
 
-
-
-//清洗数据
-        List<Map<String,String>> listmap = new ArrayList<>();
-        for(int i = 0;i < starlistmap.size();i++){
-            Map<String,String> middleMap = new HashMap<>();
-            for(String relationkey :relationMap.keySet()){
-                for(String listkey : starlistmap.get(i).keySet()){
-                    if (relationkey.equals(listkey)){
-                        middleMap.put(relationkey,starlistmap.get(i).get(relationkey));
-                    }
-                }
-            }
-            listmap.add(middleMap);
-        }
-
 //能把单位换算和内容覆盖写在一起
         String regEx="^([0-9]*[.]?[0-9]+)(.*)";
         Pattern pattern = Pattern.compile(regEx);
-
         for (String hashkey : hashMap.keySet()) { //对hashMap 的key进行遍历  hashmap就是前端传的数据
             for(String listkey : listmap.get(0).keySet()){ //对listmap的key进行遍历，取第0个map
                 if(hashkey.equals(listkey)){ // 判断 hashMap的某个key是否等于 listmap第0个map的key
@@ -150,7 +120,6 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
                                     String hashmapkey_unit_group = matcher_hashmapkey.group(2);
                                     hashmapkey_value_code = hashmapkey_value_group; // value_code 里面存储数值
                                     hashmapkey_unit_code = hashmapkey_unit_group; // unit_code 里面存储 单位
-
                                 }
                                 //切开hashmap中的value，将单位和数值分开
                                 Matcher matcher_hashmap = pattern.matcher(hashMap.get(hashkey).get(hashmapkey));//切开hashmap中的value，将单位和数值分开
@@ -199,7 +168,64 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
     @Override
     public List<Map<String,Object>> GetDatebase() {
         List<Map<String,Object>> database = generalMapper.SelectDatebase();
-
         return database;
+    }
+
+    @Override
+    public List<Map<String, String>> Cleandata(MultipartFile file,Map<String,String> relationMap) throws Exception {
+        List<Map<String, String>> content = new ArrayList<>();
+        String postfix = ExcelTool.getPostfix(file.getOriginalFilename());
+
+        if (("xlsx".equals(postfix) || "xls".equals(postfix))) {content = readFileService.readExcelContent(file);}
+        else if ("csv".equals(postfix)) {content = readFileService.readCSV(file);}
+
+        List<Map<String,String>> starlistmap = new ArrayList<>(content);//解析完的excel文件传输的数据
+
+//清洗数据
+        List<Map<String,String>> listmap = new ArrayList<>();
+        for(int i = 0;i < starlistmap.size();i++){
+            Map<String,String> middleMap = new HashMap<>();
+            for(String relationkey :relationMap.keySet()){
+                for(String listkey : starlistmap.get(i).keySet()){
+                    if (relationkey.equals(listkey)){
+                        middleMap.put(relationkey,starlistmap.get(i).get(relationkey));
+                    }
+                }
+            }
+            listmap.add(middleMap);
+        }
+        return listmap;
+    }
+
+    @Override
+    public List<Map<String, Object>> IsNotEnume(String tableName, String columnName) {
+
+        String token = generalMapper.SelectEnume(tableName,columnName);
+        List<Map<String,Object>> map = new ArrayList<>();
+        Map<String,Object> tokenMap = new HashMap<>();
+//        枚举型
+        if (token == null) {
+            map = generalMapper.NotEnumeration(tableName, columnName);
+            tokenMap.put("token","false");
+            map.add(tokenMap);
+        }
+        else if(token.equals("true"))
+        {
+            map = generalMapper.Enumeration(tableName, columnName);
+            tokenMap.put("token","true");
+            map.add(tokenMap);
+        }
+        return map;
+    }
+
+    @Override
+    public List<Map<String, String>> NotRelationData(List<Map<String, String>> listmap, Map<String, String> relationMap, Map<String,Map<String,String>> hashMap) {
+
+        return null;
+    }
+
+    @Override
+    public List<Map<String, String>> NotRelationMsg(List<Map<String, String>> listmap, Map<String, String> relationMap, Map<String, Map<String, String>> hashMap) {
+        return null;
     }
 }

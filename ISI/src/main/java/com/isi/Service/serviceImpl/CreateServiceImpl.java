@@ -8,9 +8,7 @@ import com.isi.Mapper.CreateMapper;
 import com.isi.Mapper.GeneralMapper;
 import com.isi.Service.CreateService;
 import com.isi.Service.GeneralService;
-import com.isi.pojo.CreateTable;
-import com.isi.pojo.CustomTable;
-import com.isi.pojo.GeneralTable;
+import com.isi.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,5 +59,19 @@ public class CreateServiceImpl extends ServiceImpl<CreateMapper, CreateTable> im
         create.setTableDescription((String) map.get("tableDescription"));
         create.setCustomTables(data1);
         return create;
+    }
+
+    @Override
+    public Boolean ELmit(String tableName, String columnName, List<Enume> enumes,String tokenEnume) {
+        for(int i = 0;i<enumes.size();i++) {
+            createMapper.EnumeTable(tableName, columnName, enumes.get(i).getEnumes(), tokenEnume);
+        }
+            return true;
+    }
+
+    @Override
+    public Boolean LLmit(String tableName, String columnName, int lengthMin,int lengthMax,String tokenEnume) {
+         createMapper.NotEnumeTable(tableName,columnName,lengthMin,lengthMax,tokenEnume);
+        return true;
     }
 }

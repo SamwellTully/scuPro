@@ -24,5 +24,10 @@
     <delete id="DropTable" parameterType="com.isi.pojo.CreateTable">
         drop table  ${tableName}
     </delete>
-
+    <insert id="EnumeTable" parameterType="com.isi.pojo.IsNotEnume">
+      insert into EnumerationTable (tableName,columnName,enumeration,tokenEnume) values (#{tableName},#{columnName},#{enumes},#{tokenEnume})
+    </insert>
+<insert id="NotEnumeTable" parameterType="com.isi.pojo.IsNotEnume">
+    insert into NotenumerationTable (tableName,columnName,lengthMin,lengthMax,tokenEnume) values (#{tableName},#{columnName},${lengthMin},${lengthMax},#{tokenEnume})
+</insert>
 </mapper>

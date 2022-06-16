@@ -13,6 +13,15 @@
     <select id="SelectDatebase"  resultType="java.util.Map">
         select  Generaltable_name from Generaltable
     </select>
+    <select id="SelectEnume" parameterType="com.isi.pojo.IsNotEnume" resultType="String">
+        select tokenEnume from EnumerationTable where columnName = #{columnName} and tableName = #{tableName}  LIMIT 1
+    </select>
+    <select id="Enumeration" parameterType="com.isi.pojo.IsNotEnume" resultType="java.util.Map">
+        select enumeration FROM EnumerationTable where columnName = #{columnName} and tableName = #{tableName}
+    </select>
+    <select id="NotEnumeration" parameterType="com.isi.pojo.IsNotEnume" resultType="java.util.Map">
+        SELECT lengthMin,lengthMax FROM NotenumerationTable WHERE columnName = #{columnName} and tableName = #{tableName}
+    </select>
 <!--    <update id="Writing">-->
 <!--     INSERT INTO-->
 <!--    </update>-->

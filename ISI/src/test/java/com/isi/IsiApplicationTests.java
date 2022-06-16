@@ -3,14 +3,9 @@ package com.isi;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.isi.Mapper.AdminMapper;
-import com.isi.Mapper.MappingMapper;
-import com.isi.Mapper.UserMapper;
+import com.isi.Mapper.*;
 import com.isi.Service.*;
-import com.isi.pojo.Admin;
-import com.isi.pojo.CreateTable;
-import com.isi.pojo.CustomTable;
-import com.isi.pojo.User;
+import com.isi.pojo.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,6 +35,10 @@ class IsiApplicationTests {
     private MappingService mappingService;
     @Autowired
     private MappingMapper mappingMapper;
+    @Autowired
+    private CreateMapper createMapper;
+    @Autowired
+    private GeneralMapper generalMapper;
     @Test
     void contextLoads() {
         System.out.println(("----- selectAll method test ------"));
@@ -140,11 +139,9 @@ class IsiApplicationTests {
     }
     @Test
     void Datetest(){
-        Map<String,String> map = new HashMap<>();
-        map.put("k","value");
-        map.put("k1","value1");
-        map.put("k2","value2");
-        mappingService.IncreaseMapping(22,"test",map);
-        System.out.println(mappingService.CheckMapping(22,"test"));
+
+    generalService.IsNotEnume("test1","sex");
+//        for(int i=0;i<enumes.size();i++)
+//            createMapper.EnumeTable("test1","sex",enumes.get(i).getEnumes());
     }
 }

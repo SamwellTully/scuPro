@@ -126,8 +126,9 @@ public class SaveDataServiceImpl implements SaveDataService {
             for (Map.Entry<String, String> stringStringEntry : datum.entrySet()) {
                 if (StringUtils.isEmpty(stringStringEntry.getValue())) {
                     dataList.add("");
+                }else {
+                    dataList.add(stringStringEntry.getValue());
                 }
-                dataList.add(stringStringEntry.getValue());
             }
             lists.add(dataList);
         }

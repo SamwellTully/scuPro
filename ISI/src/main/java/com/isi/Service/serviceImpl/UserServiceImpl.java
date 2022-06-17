@@ -25,6 +25,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //    @Autowired
 //    private UserMapper userMapper;
 
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public String executeLogin(String username, String password) {
@@ -63,6 +65,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         baseMapper.insert(user);
 
         return user;
+    }
+
+    /**
+     * @data:2022/6/17
+     * @author:sunminglong
+     * @param institutionName
+     * @return
+     */
+    @Override
+    public int getUserId(String institutionName) {
+        int UserId = userMapper.SelectUserId(institutionName);
+        return UserId;
     }
 
     @Override

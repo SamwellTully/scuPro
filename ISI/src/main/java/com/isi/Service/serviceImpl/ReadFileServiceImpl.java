@@ -7,7 +7,6 @@ import com.isi.utils.ExcelUtils;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -91,9 +90,9 @@ public class ReadFileServiceImpl implements ReadFileService {
      */
     @Override
     public Boolean checkFileSize(MultipartFile file, int size, String unit) {
-        if (file.isEmpty() || StringUtils.isEmpty(size) || StringUtils.isEmpty(unit)) {
-            return false;
-        }
+//        if (file.isEmpty() || StringUtils.isEmpty(size) || StringUtils.isEmpty(unit)) {
+//            return false;
+//        }
         long len = file.getSize();
         double fileSize = 0;
         if ("B".equals(unit.toUpperCase())) {

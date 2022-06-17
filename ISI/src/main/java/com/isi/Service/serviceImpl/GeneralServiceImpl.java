@@ -66,6 +66,7 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
         }
     }
 
+//    查到表的所有属性
     @Override
     public List<Map<String, Object>> getProper(String tableName) {
         List<Map<String,Object>> li = generalMapper.Showstructure(tableName);
@@ -220,12 +221,50 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
 
     @Override
     public List<Map<String, String>> NotRelationData(List<Map<String, String>> listmap, Map<String, String> relationMap, Map<String,Map<String,String>> hashMap) {
+        List<Map<String,String>> listmaps = new ArrayList<>();
+        for(String hashkey : hashMap.keySet()){
+            for(String listkey : listmap.get(0).keySet()){
+                if(hashkey.equals(listkey)){
+                    for(int i = 0;i < listmap.size();i++){
+                        Map<String,String> middleMap = new HashMap<>();
+                        for (String hashmapkey : hashMap.get(hashkey).keySet()){
+                            if (hashMap.get(hashkey).get(hashmapkey).equals(listmap.get(i).get(listkey))){
+                                listmaps.add(listmap.get(i));
+                            }
 
-        return null;
+                        }
+                    }
+                }
+            }
+        }
+        return listmaps;
     }
 
     @Override
-    public List<Map<String, String>> NotRelationMsg(List<Map<String, String>> listmap, Map<String, String> relationMap, Map<String, Map<String, String>> hashMap) {
-        return null;
+    public List<Map<Integer, String>> NotRelationMsg(List<Map<String, String>> listmap, Map<String, String> relationMap, Map<String, Map<String, String>> hashMap) {
+        List<Map<Integer,String>> listmaps = new ArrayList<>();
+
+        for(String hashkey : hashMap.keySet()){
+            for(String listkey : listmap.get(0).keySet()){
+                if(hashkey.equals(listkey)){
+                    for(int i = 0;i < listmap.size();i++){
+                        Map<Integer,String> map = new HashMap<>();
+                        int count = 0;
+                        Map<String,String> middleMap = new HashMap<>();
+                        for (String hashmapkey : hashMap.get(hashkey).keySet()){
+                            if (hashMap.get(hashkey).get(hashmapkey).equals(listmap.get(i).get(listkey))){
+                                count++;
+                            }
+                        }
+                        if(count == 0){
+                            map.put(i+2,"没有匹配关系");
+                           listmaps.add(map);
+                        }
+                    }
+                }
+            }
+        }
+
+        return listmaps;
     }
 }

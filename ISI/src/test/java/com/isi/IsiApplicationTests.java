@@ -139,9 +139,5 @@ class IsiApplicationTests {
     }
     @Test
     void Datetest(){
-
-    generalService.IsNotEnume("test1","sex");
-//        for(int i=0;i<enumes.size();i++)
-//            createMapper.EnumeTable("test1","sex",enumes.get(i).getEnumes());
     }
 }

@@ -145,4 +145,8 @@ public class UserController {
 
         return null;
     }
+    @RequestMapping("/userId")
+    public APIResult userId(String institutionName){
+        return APIResult.succ("id",userService.getUserId(institutionName));
+    }
 }

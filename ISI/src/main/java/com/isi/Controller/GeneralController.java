@@ -34,7 +34,7 @@ public class GeneralController {
     @PostMapping("/Propers")
     public APIResult getProper( String tableName) {
        generalService.getProper(tableName);
-        return APIResult.succ("创建成功", true);
+        return APIResult.succ("创建成功", generalService.getProper(tableName));
     }
 //     内容替换
     @PostMapping("/relacement")

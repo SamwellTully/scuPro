@@ -4,18 +4,19 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.isi.Service.CreateService;
 import com.isi.Service.GeneralService;
+import com.isi.Service.SaveDataService;
 import com.isi.dto.APIResult;
+import com.isi.dto.Result;
+import com.isi.dto.SaveDataParam;
 import com.isi.pojo.CreateTable;
 import com.isi.pojo.Enume;
 import com.isi.pojo.IsNotEnume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,8 @@ public class CreateController {
     private CreateService createService;
     @Autowired
     private GeneralService generalService;
+    @Autowired
+    private SaveDataService saveDataService;
     @RequestMapping(value = "/createTable",method = RequestMethod.POST) //json字符串
     public APIResult create(String JsonString){
         CreateTable createTable = new CreateTable();
@@ -90,4 +93,12 @@ public class CreateController {
        }
        return APIResult.succ("添加成功",true);
   }
+    @RequestMapping("/sample")
+    public Result SampleData(@RequestBody SaveDataParam saveDataParam){
+        if (saveDataParam!=null){
+            return saveDataService.saveData(saveDataParam.getData(),saveDataParam.getRelationMap(),saveDataParam.getTableName());
+        }
+        return new Result(false,"数据保存失败");
+
+    }
 }

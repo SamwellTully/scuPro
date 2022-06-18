@@ -61,7 +61,7 @@ public class GeneralController {
         List<Map<String,Object>> database = generalService.GetDatebase();
         return database;
     }
-    @PostMapping("IsNotEnume")
+    @PostMapping("/IsNotEnume")
     public Boolean JudgeEnume(String tableName,String columnName){
         List<Map<String,Object>> maplist = new ArrayList<>();
         maplist = generalService.IsNotEnume(tableName, columnName);

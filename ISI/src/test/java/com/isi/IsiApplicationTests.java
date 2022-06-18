@@ -39,6 +39,7 @@ class IsiApplicationTests {
     private CreateMapper createMapper;
     @Autowired
     private GeneralMapper generalMapper;
+
     @Test
     void contextLoads() {
         System.out.println(("----- selectAll method test ------"));
@@ -139,5 +140,17 @@ class IsiApplicationTests {
     }
     @Test
     void Datetest(){
+        List<Map<String,String>> data = new ArrayList<>();
+        Map<String,String> map = new HashMap<>();
+        Map<String,String> map1 = new HashMap<>();
+        map.put("test_name","test1");
+        map.put("test_sex","test1");
+        map.put("test_address","test1");
+        data.add(map);
+        map1.put("test_name","test_name");
+        map1.put("test_sex","test_sex");
+        map1.put("test_address","test_address");
+        System.out.println(data);
+        saveDataService.saveData(data,map1,"relation_map1");
     }
 }

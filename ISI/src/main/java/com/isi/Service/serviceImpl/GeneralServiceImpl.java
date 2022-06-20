@@ -90,14 +90,14 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
     @Override
     public List<Map<String, String>> Conreplacement(List<Map<String,String>> listmap,Map<String,String> relationMap,Map<String,Map<String,String>> hashMap) throws Exception {
 
-        String listmap_value_code = String.valueOf(new StringBuffer());          //正则时使用 值     例：1cm   value = 1 ；处理总数据表
-        String listmap_unit_code = String.valueOf(new StringBuffer());          //正则时使用  单位   例： 1cm   unit = cm;
+        String listmap_value_code = String.valueOf(new StringBuffer());
+        String listmap_unit_code = String.valueOf(new StringBuffer());
 
-        String hashmapkey_value_code = String.valueOf(new StringBuffer());          //正则时使用 前端反馈的表的key
+        String hashmapkey_value_code = String.valueOf(new StringBuffer());
         String hashmapkey_unit_code = String.valueOf(new StringBuffer());
 
-        String hashmap_value_code = String.valueOf(new StringBuffer());          //正则时使用 值   前端反馈表
-        String hashmap_unit_code = String.valueOf(new StringBuffer());          //正则时使用  单位
+        String hashmap_value_code = String.valueOf(new StringBuffer());
+        String hashmap_unit_code = String.valueOf(new StringBuffer());
 
 //能把单位换算和内容覆盖写在一起
         String regEx="^([0-9]*[.]?[0-9]+)(.*)";
@@ -116,7 +116,7 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
                             {
                                 if(listmap.get(i).get(listkey) == null)continue;//如果listmap列表中为空时，不做内容替换
                                 Matcher matcher_hashmapkey = pattern.matcher(hashmapkey);// 切开hashmap中的key
-                                while (matcher_hashmapkey.find()) { //切开的是value
+                                while (matcher_hashmapkey.find()) {
                                     String hashmapkey_value_group = matcher_hashmapkey.group(1);
                                     String hashmapkey_unit_group = matcher_hashmapkey.group(2);
                                     hashmapkey_value_code = hashmapkey_value_group; // value_code 里面存储数值
@@ -200,7 +200,6 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
 
     @Override
     public List<Map<String, Object>> IsNotEnume(String tableName, String columnName) {
-
         String token = generalMapper.SelectEnume(tableName,columnName);
         List<Map<String,Object>> map = new ArrayList<>();
         Map<String,Object> tokenMap = new HashMap<>();
@@ -221,20 +220,57 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
 
     @Override
     public List<Map<String, String>> NotRelationData(List<Map<String, String>> listmap, Map<String, String> relationMap, Map<String,Map<String,String>> hashMap) {
-        List<Map<String,String>> listmaps = new ArrayList<>();
-        for(String hashkey : hashMap.keySet()){
-            for(String listkey : listmap.get(0).keySet()){
-                if(hashkey.equals(listkey)){
-                    for(int i = 0;i < listmap.size();i++){
-                        Map<String,String> middleMap = new HashMap<>();
-                        for (String hashmapkey : hashMap.get(hashkey).keySet()){
-                            if (hashMap.get(hashkey).get(hashmapkey).equals(listmap.get(i).get(listkey))){
-                                listmaps.add(listmap.get(i));
-                            }
+        String listmap_unit_code = String.valueOf(new StringBuffer());
+        String hashmap_unit_code = String.valueOf(new StringBuffer());
 
+        List<Map<String,String>> listmaps = new ArrayList<>();
+        String regEx="^([0-9]*[.]?[0-9]+)(.*)";
+        Pattern pattern = Pattern.compile(regEx);
+        for(int i = 0;i <listmap.size();i++){
+            boolean flag = true;
+
+            for(String listkey : listmap.get(i).keySet()){
+                for(String hashkey : hashMap.keySet()){
+                    if(listkey.equals(hashkey)){
+                        for(String hashkey_key : hashMap.get(hashkey).keySet()){
+                            Matcher mat =null;
+                            Map<String,String> middleMap = new HashMap<>();
+                                mat = pattern.matcher(hashMap.get(hashkey).get(hashkey_key));
+                                if (hashMap.get(hashkey).get(hashkey_key).equals(listmap.get(i).get(listkey))) {
+                                }
+                                else if(mat.find())
+                                {
+                                    if(listmap.get(i).get(listkey) == null){
+                                        flag = false ;
+                                        continue;
+                                    }
+
+                                    //切开hashmap中的value，将单位和数值分开
+                                    Matcher matcher_hashmap = pattern.matcher(hashMap.get(hashkey).get(hashkey_key));//切开hashmap中的value，将单位和数值分开
+                                    while (matcher_hashmap.find()) { //切开的是value
+                                        String hashmap_unit_group = matcher_hashmap.group(2);
+                                        hashmap_unit_code = hashmap_unit_group; // unit_code 里面存储 单位
+                                    }
+                                    //切开listmap中的value，将单位和数值分开
+                                    Matcher matcher_listmap = pattern.matcher(listmap.get(i).get(listkey));//切开listmap中的value，将单位和数值分开
+                                    while (matcher_listmap.find()) {
+                                        String listmap_unit_group = matcher_listmap.group(2);
+                                        listmap_unit_code=listmap_unit_group; // unit_code 里面存储 单位
+                                    }
+                                    if(hashmap_unit_code.equals(listmap_unit_code));
+                                    else flag = false;
+                                }
+                                else {
+                                    flag = false;
+                                }
+
+                            }
                         }
-                    }
                 }
+            }
+
+            if(flag) {
+                listmaps.add(listmap.get(i));
             }
         }
         return listmaps;
@@ -266,5 +302,15 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
         }
 
         return listmaps;
+    }
+    @Override
+    public List<Map<String, Object>> NotEnume(String tableName, String columnName) {
+        return  generalMapper.NotEnumeration(tableName,columnName);
+    }
+
+    @Override
+    public  List<GeneralTable> GetGeneraltable() {
+        List<GeneralTable> generalTables = generalMapper.selectList(null);
+        return generalTables;
     }
 }

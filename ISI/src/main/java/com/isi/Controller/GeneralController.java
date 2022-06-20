@@ -79,4 +79,12 @@ public class GeneralController {
     public APIResult GetEnume(String tableName,String columnName){
         return APIResult.succ("枚举项",generalService.IsNotEnume(tableName, columnName));
     }
+    @PostMapping("/NotEnumeData")
+    public APIResult GetNotEnume(String tableName,String columnName){
+        return APIResult.succ("不是枚举项",generalService.NotEnume(tableName,columnName));
+    }
+    @GetMapping("/selectGenertable")
+    public APIResult Getgenertable(){
+        return APIResult.succ("查询成功",generalService.GetGeneraltable());
+    }
 }

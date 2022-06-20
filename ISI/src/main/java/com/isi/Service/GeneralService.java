@@ -35,5 +35,6 @@ public interface GeneralService extends IService<GeneralTable> {
 //   没有匹配规则的错误报警
    List<Map<String,String>> NotRelationData(@Param("listmap") List<Map<String,String>> listmap,@Param("relationMap") Map<String,String> relationMap,@Param("hashMap") Map<String,Map<String,String>> hashMap);
     List<Map<Integer,String>> NotRelationMsg(@Param("listmap") List<Map<String,String>> listmap,@Param("relationMap") Map<String,String> relationMap,@Param("hashMap") Map<String,Map<String,String>> hashMap);
-
+    List<Map<String,Object>> NotEnume(@Param("tableName") String tableName,@Param("columnName") String columnName);
+    List<GeneralTable> GetGeneraltable();
 }

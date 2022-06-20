@@ -58,7 +58,6 @@ public class CreateController {
         token = generalService.delectdate(tableName);
         if (token) {
             createService.SelectTable(tableName);
-            System.out.println("======delect=========");
             return APIResult.succ("删除成功",1);
         }else {
             //data : 应为返回查询结果。。。。🐟

@@ -101,6 +101,7 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
 
 //能把单位换算和内容覆盖写在一起
         String regEx="^([0-9]*[.]?[0-9]+)(.*)";
+        String regExe="[(.*)]";
         Pattern pattern = Pattern.compile(regEx);
         for (String hashkey : hashMap.keySet()) { //对hashMap 的key进行遍历  hashmap就是前端传的数据
             for(String listkey : listmap.get(0).keySet()){ //对listmap的key进行遍历，取第0个map

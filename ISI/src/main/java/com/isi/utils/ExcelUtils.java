@@ -154,5 +154,20 @@ public class ExcelUtils {
             }
         }
     }
+    /**
+     * 将一维数组变成二维数组
+     * @param filedNames
+     * @return
+     */
+    public static List<List<String>> getDoubleArray(List<String> filedNames) {
+        List<List<String>> array = new ArrayList<>();
+
+        for (String filedName : filedNames) {
+            ArrayList<String> name = new ArrayList<>();
+            name.add(filedName);
+            array.add(name);
+        }
+        return array;
+    }
 
 }

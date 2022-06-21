@@ -40,7 +40,7 @@ public class SaveDataServiceImpl implements SaveDataService {
         List<List<String>> parseData = parseData(data);
         //sql拼接
         String sql = sqlString(replaceHeadData, parseData, tableName);
-        Boolean result = jdbcUtils.connectionSql(sql);
+        Boolean result = jdbcUtils.insert(sql);
         if (!result) {
             return new Result(result, "插入失败");
         }

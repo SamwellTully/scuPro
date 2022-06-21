@@ -1,19 +1,19 @@
 package com.isi;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.util.ListUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.isi.Mapper.*;
 import com.isi.Service.*;
-import com.isi.pojo.*;
+import com.isi.pojo.Admin;
+import com.isi.pojo.CustomTable;
+import com.isi.pojo.User;
+import com.isi.utils.JdbcUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootTest
 class IsiApplicationTests {
@@ -39,6 +39,8 @@ class IsiApplicationTests {
     private CreateMapper createMapper;
     @Autowired
     private GeneralMapper generalMapper;
+    @Autowired
+    private JdbcUtils jdbcUtils;
 
     @Test
     void contextLoads() {
@@ -152,5 +154,51 @@ class IsiApplicationTests {
         map1.put("test_address","test_address");
         System.out.println(data);
         saveDataService.saveData(data,map1,"relation_map1");
+    }
+    @Test
+    public void queryTest(){
+        List<String> arr = new ArrayList<>();
+        arr.add("name");
+        arr.add("sex");
+        arr.add("age");
+        List<List<String>> book = jdbcUtils.queryTable("exportdata",arr);
+        EasyExcel.write();
+        System.out.println(book);
+    }
+    /**
+     * 不创建对象的写
+     */
+    @Test
+    public void noModelWrite() {
+        // 写法1
+        String fileName =  ".xlsx";
+        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        EasyExcel.write(fileName).head(head()).sheet("模板").doWrite(dataList());
+    }
+
+    private List<List<String>> head() {
+        List<List<String>> list = ListUtils.newArrayList();
+        List<String> head0 = ListUtils.newArrayList();
+        head0.add("字符串" + System.currentTimeMillis());
+        List<String> head1 = ListUtils.newArrayList();
+        head1.add("数字" + System.currentTimeMillis());
+        List<String> head2 = ListUtils.newArrayList();
+        head2.add("日期" + System.currentTimeMillis());
+        list.add(head0);
+        list.add(head1);
+        list.add(head2);
+        return list;
+    }
+
+    private List<List<Object>> dataList() {
+        List<List<Object>> list = ListUtils.newArrayList();
+        for (int i = 0; i < 10; i++) {
+            List<Object> data = ListUtils.newArrayList();
+            data.add("字符串" + i);
+            data.add(new Date());
+            data.add(0.56);
+            list.add(data);
+        }
+        return list;
     }
 }

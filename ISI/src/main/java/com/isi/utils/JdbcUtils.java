@@ -44,8 +44,8 @@ public class JdbcUtils {
             connection=this.getConnection();
             statement = connection.prepareStatement(sql);
             resultSet = statement.executeUpdate(sql);
-            if (resultSet < 0) {
-                return false;
+            if (resultSet > 0) {
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class JdbcUtils {
             }
 
         }
-        return true;
+        return false;
     }
 
     /**
@@ -81,7 +81,10 @@ public class JdbcUtils {
                 List<String> rowData= new ArrayList<>();
                 for (String filed : filedName) {
                     String result = resultSet.getString(filed);
-                    if (result.isEmpty()){
+                    //result.isEmpty()只能处理数据库里面值为空的情况，不能处理（null）这种情况，用result==可以处理这两种情况
+                    //isEmpty() 用于判断List内容是否为空,必须在 list 本身不是空的引用的情况下才行;
+                    //null 用于判断有没有这个集合对象;
+                    if (result==null){
                         result="";
                     }
                     rowData.add(result);

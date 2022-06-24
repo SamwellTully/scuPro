@@ -78,6 +78,13 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
     }
 
     @Override
+    public List<Map<String, Object>> GetAllData(String tableName) {
+        List<Map<String,Object>> listmap = new ArrayList<>();
+        listmap = generalMapper.SelectAllData(tableName);
+        return listmap;
+    }
+
+    @Override
     public int SelCondition(String GTalename) {
         GeneralTable general = new GeneralTable();
         general.setGTalename(GTalename);

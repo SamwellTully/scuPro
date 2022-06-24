@@ -87,4 +87,6 @@ public class GeneralController {
     public APIResult Getgenertable(){
         return APIResult.succ("查询成功",generalService.GetGeneraltable());
     }
+    @PostMapping("/GetAllData")
+    public APIResult GetAllData(String tableName){return APIResult.succ("查询成功",generalService.GetAllData(tableName));}
 }

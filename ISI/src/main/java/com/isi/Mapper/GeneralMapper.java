@@ -13,7 +13,7 @@ public interface GeneralMapper extends BaseMapper<GeneralTable> {
     List<Map<String, Object>> Showstructure(@Param("tableName") String tableName);
     List<Map<String, Object>> Selecttarget(@Param("tableName") String tableName);
     List<Map<String,Object>> SelectDatebase();
-
+    List<Map<String, Object>> SelectAllData(@Param("tableName") String tableName);
 
     //数据传输到数据库List<>;
 //    Boolean Writing(@Param("tableName") String tableName,@Param("Map") Map map,@Param("List<Map>") List<Map<String,Object>> listMap);

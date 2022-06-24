@@ -19,7 +19,8 @@ public interface GeneralService extends IService<GeneralTable> {
     Boolean delectdate(@Param("GTalename") String GTalename);
 
     List<Map<String,Object>> getProper(@Param("tableName") String tableName);
-
+//用户界面查找所有数据
+    List<Map<String,Object>> GetAllData(@Param("tableName") String tableName);
     int SelCondition(@Param("GTalename") String GTalename);
 
 //        内容替换

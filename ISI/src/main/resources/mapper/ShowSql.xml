@@ -10,6 +10,9 @@
     <select id="Selecttarget" parameterType="com.isi.pojo.CreateTable" resultType="java.util.Map">
         select * from ${tableName}  LIMIT 1
     </select>
+    <select id="SelectAllData" parameterType="com.isi.pojo.CreateTable" resultType="java.util.Map">
+        select * from ${tableName}
+    </select>
     <select id="SelectDatebase"  resultType="java.util.Map">
         select  Generaltable_name from Generaltable
     </select>

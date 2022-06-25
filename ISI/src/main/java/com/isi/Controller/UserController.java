@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.isi.Service.UserService;
 import com.isi.dto.APIResult;
 import com.isi.pojo.User;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -22,39 +22,45 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin
 public class UserController {
     @Autowired
     private  UserService userService;
 
+    Map<String, String> map = new HashMap<>(16);
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public APIResult login(String username , String password) {
+        System.out.println(password);
+        System.out.println(1);
         String token = userService.executeLogin(username,password);
         if (ObjectUtils.isEmpty(token)) {
             return APIResult.fail("账号密码错误",null);
         }
-        Map<String, String> map = new HashMap<>(16);
-        map.put("token", token);
-        return APIResult.succ("登入成功",map);
+        map.put(token, username);
+        return APIResult.succ("登入成功",token);
     }
+
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public APIResult register(String institutionName,String institutionType,String institutionInstruction,
-                    String institutionPostalCode,String institutionAddress ,String userEmail,String userOperatorName,
+                              String institutionPostalCode,String institutionAddress ,String userEmail,String userOperatorName,
                               String userPhoneNum,String userName,String userPassword) {
         User addUser =  User.builder().
-                        userName(userName)
-                        .userPassword(userPassword)
-                        .userEmail((userEmail))
-                        //默认设置权限为0
-                        .userPrivileges(0)
-                        .userPhoneNum(userPhoneNum)
-                        .userOperatorName(userOperatorName)
-                        .institutionName(institutionName)
-                        .institutionAddress(institutionAddress)
-                        .institutionPostalCode(institutionPostalCode)
-                        .institutionInstruction(institutionInstruction)
-                        .institutionType(institutionType)
-                        .build();
+                userName(userName)
+                .userPassword(userPassword)
+                .userEmail((userEmail))
+                //默认设置权限为0
+                .userPrivileges(0)
+                .userPhoneNum(userPhoneNum)
+                .userOperatorName(userOperatorName)
+                .institutionName(institutionName)
+                .institutionAddress(institutionAddress)
+                .institutionPostalCode(institutionPostalCode)
+                .institutionInstruction(institutionInstruction)
+                .institutionType(institutionType)
+                .build();
+        System.out.println(addUser);
         User user = userService.executeRegister(addUser);
         if (ObjectUtils.isEmpty(user)) {
             return APIResult.fail("账号注册失败,用户名或邮箱已经使用",null);
@@ -65,7 +71,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public APIResult getUser( String username) {
+    public APIResult getUser( String token) {
+        String username = map.get(token);
         User user = userService.getUserByUsername(username);
         if(user!=null)
             return APIResult.succ("用户信息",user);
@@ -76,7 +83,7 @@ public class UserController {
     @PostMapping("/update")
     public APIResult updateUser(String institutionName,String institutionType,String institutionInstruction,
                                 String institutionPostalCode,String institutionAddress ,String userEmail,String userOperatorName,
-                                String userPhoneNum,String userName) {
+                                String userPhoneNum,String userName,String userPassword) {
 
 
 
@@ -113,8 +120,9 @@ public class UserController {
         if(userPhoneNum!=null&&!(userPhoneNum.equals(""))){
             adduser.setUserPhoneNum(userPhoneNum);
         }
-
-
+        if(userPassword!=null&&!(userPassword.equals(""))){
+            adduser.setUserPassword(userPassword);
+        }
         boolean b = userService.update(adduser, new LambdaQueryWrapper<User>().
                 eq(User::getUserName, adduser.getUserName()));
 
@@ -144,9 +152,5 @@ public class UserController {
     public APIResult userPage(){
 
         return null;
-    }
-    @RequestMapping("/userId")
-    public APIResult userId(String institutionName){
-        return APIResult.succ("id",userService.getUserId(institutionName));
     }
 }

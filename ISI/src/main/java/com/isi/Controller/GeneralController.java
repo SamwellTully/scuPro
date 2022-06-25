@@ -44,13 +44,9 @@ public class GeneralController {
         Map<String,Map<String,String>> hashMap = new HashMap<>();
         hashMap = (Map<String, Map<String, String>>) JSON.parse(hashString);
         List<Map<String,String>> listmaps = new ArrayList<>();
-        listmaps = generalService.Conreplacement(generalService.Cleandata(file,relationMap), relationMap,hashMap);
-//        处理完错误信息后的数据
-        generalService.NotRelationData(listmaps,relationMap,hashMap);
-        generalService.NotRelationMsg(listmaps,relationMap,hashMap);
-        return APIResult.succ(String.valueOf(generalService.NotRelationMsg(listmaps,relationMap,hashMap)),
-                                             generalService.NotRelationData(listmaps,relationMap,hashMap));
-}
+        listmaps = generalService.Conreplacement(generalService.Cleandata(file,relationString), relationMap,hashMap);
+        return APIResult.succ("替换成功", listmaps);
+    }
     @PostMapping("/getdata")
     public List<Map<String,Object>> Gettarget(String tableName){
         List<Map<String,Object>> data = generalService.Gettarget(tableName);

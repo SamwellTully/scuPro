@@ -357,16 +357,22 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
         List<String> unit = new ArrayList<>();
         String regExe = "^([0-9]*[.]?[0-9]+)(.*)";
         Pattern pattern = Pattern.compile(regExe);
+        String listmap_Unit = String.valueOf(new StringBuffer());
         for(int i = 0;i < listmap.size();i++){
-            String listmap_Unit = String.valueOf(new StringBuffer());
+            Matcher mat = null;
             Boolean token = true ;
-            Matcher mat = pattern.matcher(listmap.get(i).get(columnName));
-            if (mat.find()==false)continue;
-            while(mat.find()){
-                String listmap_unit = mat.group(2);
-                listmap_Unit = listmap_unit;
+            Boolean flag ;
+            mat = pattern.matcher(listmap.get(i).get(columnName));
+            flag = mat.find();
+            if (flag==false)continue;
+            else
+            {
+                mat = pattern.matcher(listmap.get(i).get(columnName));
+                while (mat.find()) {
+                    String listmap_unit = mat.group(2);
+                    listmap_Unit = listmap_unit;
+                }
             }
-
             if(i==0) unit.add(listmap_Unit);
             else {
                 for(int j = 0;j < unit.size(); j++){
@@ -377,6 +383,7 @@ public class GeneralServiceImpl extends ServiceImpl<GeneralMapper, GeneralTable>
                 if(token == true)unit.add(listmap_Unit);
             }
         }
+
         return unit;
     }
 }

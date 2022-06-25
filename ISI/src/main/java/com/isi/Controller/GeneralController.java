@@ -47,6 +47,11 @@ public class GeneralController {
         listmaps = generalService.Conreplacement(generalService.Cleandata(file,relationString), relationMap,hashMap);
         return APIResult.succ("替换成功", listmaps);
     }
+    @PostMapping("/listUnit")
+    public APIResult ListUnit(MultipartFile file,String columnName,String relationString) throws Exception {
+        generalService.UnitData(generalService.Cleandata(file,relationString),columnName);
+        return APIResult.succ("列举单位", generalService.UnitData(generalService.Cleandata(file,relationString),columnName));
+    }
     @PostMapping("/getdata")
     public List<Map<String,Object>> Gettarget(String tableName){
         List<Map<String,Object>> data = generalService.Gettarget(tableName);
